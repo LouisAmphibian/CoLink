@@ -70,7 +70,9 @@ By combining secure payments, chat, location sharing, and gamification, CoLink p
 - Deeper integration with payment gateways
 - Multi-language expansion beyond South African languages
 
-##📊 Tech Stack
+---
+
+## 📊 Tech Stack
 -Frontend: Android (Kotlin/Java, Material Design)
 -Backend: Node.js with Express (REST APIs)
 -Database: Firebase Firestore + RoomDB (offline sync)
