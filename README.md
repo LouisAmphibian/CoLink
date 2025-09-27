@@ -51,7 +51,7 @@ By combining secure payments, chat, location sharing, and gamification, CoLink p
 
 ---
 
-##🚀 Key Features
+##🚀 Key Features:
 ✔ Secure login with SSO and biometric authentication
 ✔ Temporary group bank account with collective approval
 ✔ WhatsApp integration for invites and group chats
