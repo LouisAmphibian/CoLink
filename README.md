@@ -10,6 +10,41 @@
 <img width="286" height="502" alt="Picture8" src="https://github.com/user-attachments/assets/90b8de67-564b-4a0a-97ef-57b7f11a8a80" />
 <img width="249" height="502" alt="Picture9" src="https://github.com/user-attachments/assets/b6ce2aef-5a71-4112-a700-70901e1a190c" />
 <img width="274" height="502" alt="Picture10" src="https://github.com/user-attachments/assets/ea3525d2-87f5-4d8b-86c0-52a4091c0984" />
-</p>
-Get Together. Stay Connected.
 ![Uploading image.png…]()
+</p>
+*Get Together. Stay Connected.*
+
+##📱 About the App
+*CoLink* is a professional event coordination app designed to make it easier for friends, families, and groups to plan, fund, and enjoy meetups securely. From pooling funds with biometric approvals to live GPS sharing and weather alerts, CoLink solves common challenges in event planning. With rewards, WhatsApp integration, and personalized dashboards, it builds stronger connections while keeping event management stress-free.
+
+---
+
+##👥 Created By
+This app was proudly built by a passionate team of developers:
+- *Ayanda*
+- *Fikile*
+- *Donald*
+- *Tshepo*
+We wanted to create an app that brings people together in a safe, transparent, and fun way.
+
+---
+
+## 🛠 How It Works
+1. *Landing Page:* App splash screen introducing CoLink.
+2. *Login & Profile Creation:* Register or sign in using secure login with biometric options..
+3. *Dashboard:* See upcoming events, group chats, and pooled funds.
+4. *Event Creation:* Create, customize, and invite people via WhatsApp.
+5. *Group Fund Management:* Temporary pooled account with biometric approval for expenses.
+6. *Location & Weather:* Share live GPS location and receive real-time weather alerts.
+7. *Rewards:* Earn points and achievements for event participation and activity.
+
+---
+
+## 🎯 Why We Created It
+CoLink was designed to solve real challenges in social event planning:
+- Difficulties in managing shared expenses
+- Miscommunication within groups
+- Safety concerns when meeting up
+- Last-minute weather surprises
+By combining secure payments, chat, location sharing, and gamification, CoLink provides one simple and reliable tool to keep people connected and events successful.
+
