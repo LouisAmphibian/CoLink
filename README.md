@@ -10,7 +10,7 @@
 <img width="286" height="502" alt="Picture8" src="https://github.com/user-attachments/assets/90b8de67-564b-4a0a-97ef-57b7f11a8a80" />
 <img width="249" height="502" alt="Picture9" src="https://github.com/user-attachments/assets/b6ce2aef-5a71-4112-a700-70901e1a190c" />
 <img width="274" height="502" alt="Picture10" src="https://github.com/user-attachments/assets/ea3525d2-87f5-4d8b-86c0-52a4091c0984" />
-![Uploading image.png…]()
+
 </p>
 *Get Together. Stay Connected.*
 
@@ -25,6 +25,7 @@ This app was proudly built by a passionate team of developers:
 - *Fikile*
 - *Donald*
 - *Tshepo*
+
 We wanted to create an app that brings people together in a safe, transparent, and fun way.
 
 ---
@@ -47,4 +48,33 @@ CoLink was designed to solve real challenges in social event planning:
 - Safety concerns when meeting up
 - Last-minute weather surprises
 By combining secure payments, chat, location sharing, and gamification, CoLink provides one simple and reliable tool to keep people connected and events successful.
+
+---
+
+##🚀 Key Features
+✔ Secure login with SSO and biometric authentication
+✔ Temporary group bank account with collective approval
+✔ WhatsApp integration for invites and group chats
+✔ Real-time push notifications & event reminders
+✔ Live GPS sharing with privacy controls
+✔ Weather alerts tied to event locations
+✔ Offline support with sync
+✔ Rewards & points system for engagement
+✔ Modern Material Design UI with localization
+
+---
+
+## 🚀 Future Plans
+- Dark mode for improved UX
+- AI-driven event recommendations
+- Deeper integration with payment gateways
+- Multi-language expansion beyond South African languages
+
+##📊 Tech Stack
+-Frontend: Android (Kotlin/Java, Material Design)
+-Backend: Node.js with Express (REST APIs)
+-Database: Firebase Firestore + RoomDB (offline sync)
+-Authentication: Firebase Auth / OAuth 2.0 + biometrics
+-Notifications: Firebase Cloud Messaging
+-Integrations: WhatsApp API, Payment Gateway APIs, OpenWeatherMap
 
