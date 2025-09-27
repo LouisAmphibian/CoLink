@@ -14,12 +14,12 @@
 </p>
 *Get Together. Stay Connected.*
 
-##📱 About the App
+## 📱 About the App
 *CoLink* is a professional event coordination app designed to make it easier for friends, families, and groups to plan, fund, and enjoy meetups securely. From pooling funds with biometric approvals to live GPS sharing and weather alerts, CoLink solves common challenges in event planning. With rewards, WhatsApp integration, and personalized dashboards, it builds stronger connections while keeping event management stress-free.
 
 ---
 
-##👥 Created By
+## 👥 Created By
 This app was proudly built by a passionate team of developers:
 - *Ayanda*
 - *Fikile*
@@ -51,7 +51,7 @@ By combining secure payments, chat, location sharing, and gamification, CoLink p
 
 ---
 
-##🚀 Key Features:
+## 🚀 Key Features:
 ✔ Secure login with SSO and biometric authentication
 ✔ Temporary group bank account with collective approval
 ✔ WhatsApp integration for invites and group chats
