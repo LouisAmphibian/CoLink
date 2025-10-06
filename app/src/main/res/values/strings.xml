@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CoLink</string>
+    <string name="welcome_title">Welcome to CoLink</string>
+    <string name="choose_language_sub">Choose your language to get started</string>
+    <string name="agree_title">Welcome to CoLink</string>
+    <string name="agree_privacy">Read our Privacy Policy. Tap "Agree and continue" to accept the Terms of Service</string>
+    <string name="btn_agree">Agree and continue</string>
+    <string name="btn_next_desc">Next</string>
+    <string name="xdev_from">from\nXDev STUDIOS</string>
+</resources>
