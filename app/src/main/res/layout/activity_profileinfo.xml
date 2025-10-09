@@ -40,8 +40,6 @@
         android:layout_below="@id/subText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:src="@drawable/sample_profile"
-    android:background="@drawable/circle_background"
     android:scaleType="centerCrop" />
 
     <!-- Name EditText -->
@@ -66,8 +64,7 @@
         android:layout_height="24dp"
         android:layout_alignTop="@id/nameEditText"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_person" />
+        android:layout_marginTop="10dp" />
 
     <!-- Next Button -->
     <Button
