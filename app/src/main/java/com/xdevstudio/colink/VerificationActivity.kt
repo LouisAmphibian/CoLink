@@ -18,7 +18,7 @@ class VerificationActivity : AppCompatActivity() {
         val phoneNumber = findViewById<EditText>(R.id.phoneNumber)
         val nextButton = findViewById<Button>(R.id.nextButton)
 
-        // 1️⃣ List of countries and dial codes
+        // 1️ List of countries and dial codes
         val countries = listOf(
             "South Africa (+27)" to "+27",
             "Nigeria (+234)" to "+234",
@@ -29,7 +29,7 @@ class VerificationActivity : AppCompatActivity() {
             "Portugal (+351)" to "+351"
         )
 
-        // 2️⃣ Spinner adapter
+        // 2️ Spinner adapter
         val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
@@ -37,7 +37,7 @@ class VerificationActivity : AppCompatActivity() {
         )
         spinner.adapter = adapter
 
-        // 3️⃣ Phone length rules per country
+        // 3️ Phone length rules per country
         val phoneLengths = mapOf(
             "+27" to 9,   // South Africa
             "+234" to 10, // Nigeria
@@ -48,7 +48,7 @@ class VerificationActivity : AppCompatActivity() {
             "+351" to 9   // Portugal
         )
 
-        // 4️⃣ Detect user’s current country automatically
+        // 4️ Detect user’s current country automatically
         val defaultCountryIso = getUserCountryCode().uppercase(Locale.ROOT)
         val defaultIndex = countries.indexOfFirst { it.first.contains(defaultCountryIso, ignoreCase = true) }
 
@@ -60,7 +60,7 @@ class VerificationActivity : AppCompatActivity() {
             codeField.setText(countries[0].second)
         }
 
-        // 5️⃣ Update code + phone length on country change
+        // 5️  Update code + phone length on country change
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
                 val code = countries[position].second
@@ -74,7 +74,7 @@ class VerificationActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // 6️⃣ Handle "Next" button click
+        // 6️ Handle "Next" button click
         nextButton.setOnClickListener {
             val phone = phoneNumber.text.toString().trim()
             val code = codeField.text.toString()
@@ -91,7 +91,7 @@ class VerificationActivity : AppCompatActivity() {
         }
     }
 
-    // 7️⃣ Auto-detect device country
+    // 7️ Auto-detect device country
     private fun getUserCountryCode(): String {
         val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val simCountry = tm.simCountryIso
