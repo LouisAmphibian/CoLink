@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="24dp"
-    tools:context=".VerifyActivity">
+    tools:context=".VerifiedConfirmationActivity">
 
     <TextView
         android:id="@+id/titleText"

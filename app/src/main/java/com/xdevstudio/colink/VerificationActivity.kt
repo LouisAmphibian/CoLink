@@ -1,14 +1,25 @@
 package com.xdevstudio.colink
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.text.InputFilter
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class VerificationActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var verificationId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification)
@@ -17,6 +28,9 @@ class VerificationActivity : AppCompatActivity() {
         val codeField = findViewById<EditText>(R.id.countryCode)
         val phoneNumber = findViewById<EditText>(R.id.phoneNumber)
         val nextButton = findViewById<Button>(R.id.nextButton)
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
 
         // 1️ List of countries and dial codes
         val countries = listOf(
@@ -92,13 +106,40 @@ class VerificationActivity : AppCompatActivity() {
         }
     }
 
-    //8 Getting the verification code
-    private fun sendVerificationCode(phone: String){
-        val options = PhoneAuthOptions.n
+    // 7️ Send verification code via Firebase
+    private fun sendVerificationCode(phone: String) {
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phone)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(this)
+            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                    // Auto-verification (may happen instantly on some devices)
+                    Toast.makeText(applicationContext, "Auto verification completed", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onVerificationFailed(e: FirebaseException) {
+                    Toast.makeText(applicationContext, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onCodeSent(verificationIdParam: String, token: PhoneAuthProvider.ForceResendingToken) {
+                    verificationId = verificationIdParam
+                    Toast.makeText(applicationContext, "OTP sent to $phone", Toast.LENGTH_SHORT).show()
+
+                    // Move to OTP screen
+                    val intent = Intent(this@VerificationActivity, VerifiedConfirmationActivity::class.java)
+                    intent.putExtra("verificationId", verificationId)
+                    intent.putExtra("phoneNumber", phone)
+                    startActivity(intent)
+
+                }
+            })
+            .build()
+
+        PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-
-    // 7️ Auto-detect device country
+    // 8️ Auto-detect device country
     private fun getUserCountryCode(): String {
         val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val simCountry = tm.simCountryIso
@@ -112,3 +153,4 @@ class VerificationActivity : AppCompatActivity() {
         }
     }
 }
+
