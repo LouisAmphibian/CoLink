@@ -82,14 +82,21 @@ class VerificationActivity : AppCompatActivity() {
 
             if (phone.isBlank()) {
                 Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             } else if (phone.length < (phoneLengths[code] ?: 9)) {
                 Toast.makeText(this, "Phone number too short for $code", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Verifying $fullNumber...", Toast.LENGTH_SHORT).show()
-                // TODO: move to next step (OTP or verification logic)
+                return@setOnClickListener
             }
+
+            sendVerificationCode(fullNumber)
         }
     }
+
+    //8 Getting the verification code
+    private fun sendVerificationCode(phone: String){
+        val options = PhoneAuthOptions.n
+    }
+
 
     // 7️ Auto-detect device country
     private fun getUserCountryCode(): String {
