@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is for when we want to populate the chat list -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Profile Image/Initial -->
+    <TextView
+        android:id="@+id/chatInitial"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/circle_background"
+        android:backgroundTint="#7EC8E3"
+        android:text="A"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:fontFamily="sans-serif-medium" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+
+        <TextView
+            android:id="@+id/chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Name"
+            android:textSize="16sp"
+            android:textColor="#212121"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/chatLastMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last message preview..."
+            android:textSize="14sp"
+            android:textColor="#757575"
+            android:maxLines="1"
+            android:ellipsize="end" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chatTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:30"
+        android:textSize="12sp"
+        android:textColor="#757575" />
+
+</LinearLayout>
