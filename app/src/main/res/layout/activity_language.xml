@@ -77,11 +77,9 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_margin="18dp"
-        android:src="@drawable/ic_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/circle_btn"
-        android:contentDescription="@string/btn_next_desc"
-        android:tint="@color/white"/>
+        android:contentDescription="@string/btn_next_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

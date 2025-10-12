@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CoLink</string>
     <string name="welcome_title">Welcome to CoLink</string>
@@ -7,4 +8,8 @@
     <string name="btn_agree">Agree and continue</string>
     <string name="btn_next_desc">Next</string>
     <string name="xdev_from">from\nXDev STUDIOS</string>
+
+    <string name="enter_phone_title">Enter your phone number</string>
+    <string name="enter_phone_sub">CoLink will verify your number. Carrier charges may apply.</string>
+    <string name="verify_next">Next</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">CoLink</string>
+  <string name="welcome_title">Siyakwamukela</string>
+  <string name="choose_language_sub">Sicela ukhethe ulimi lwakho</string>
+  <string name="agree_title">Siyakwamukela</string>
+  <string name="agree_privacy">Funda Umthetho Wethu Wobumfihlo. Cindezela \"Vuma uye phambili\" ukuze wamukele Imigomo Yesevisi</string>
+  <string name="btn_agree">Vuma uye phambili</string>
+  <string name="btn_next_desc">Okulandelayo</string>
+  <string name="xdev_from">kusuka\nXDev STUDIOS</string>
+  <string name="enter_phone_title">Faka inombolo yakho yocingo</string>
+  <string name="enter_phone_sub">I-CoLink izoqinisekisa inombolo yakho. Kungase kube nezindleko zomthwali.</string>
+  <string name="verify_next">Qhubeka</string>
+</resources>
