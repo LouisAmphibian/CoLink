@@ -154,3 +154,7 @@ class VerificationActivity : AppCompatActivity() {
     }
 }
 
+/*Testing the OTP
+Test phone number: +27600000000
+OTP: 123456
+ */

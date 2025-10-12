@@ -12,4 +12,6 @@
     <color name="colink_teal">#2FB6AD</color>      <!-- button / accent -->
     <color name="colink_text">#E6F7F6</color>     <!-- main text -->
     <color name="colink_subtext">#A7D7D4</color>  <!-- lighter subtext -->
+    <color name="colink_primary2">#6DDAD3</color>
+
 </resources>
