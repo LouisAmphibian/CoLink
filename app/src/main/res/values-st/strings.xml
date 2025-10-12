@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">CoLink</string>
+  <string name="welcome_title">Rea u amohela</string>
+  <string name="choose_language_sub">Ka kopo khetha puo ea hau</string>
+  <string name="agree_title">Rea u amohela</string>
+  <string name="agree_privacy">Bala Leano la Rona la Seprivaseghi. Tobetsa \"Dumella o tsoele pele\" ho amohela Lipehelo tsa Tshebeletso</string>
+  <string name="btn_agree">Dumella o tsoele pele</string>
+  <string name="btn_next_desc">E latelang</string>
+  <string name="xdev_from">ho tsoa\nXDev STUDIOS</string>
+  <string name="enter_phone_title">Kenya nomoro ea hau ea mohala</string>
+  <string name="enter_phone_sub">CoLink e tla netefatsa nomoro ea hau. Litefiso tsa mohala li ka sebetsa.</string>
+  <string name="verify_next">Tsoela pele</string>
+</resources>

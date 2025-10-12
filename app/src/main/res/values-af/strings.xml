@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">CoLink</string>
+  <string name="welcome_title">Welkom</string>
+  <string name="choose_language_sub">Kies asseblief jou taal</string>
+  <string name="agree_title">Welkom</string>
+  <string name="agree_privacy">Lees ons Privaatheidsbeleid. Klik \"Stem in en gaan voort\" om die Diensvoorwaardes te aanvaar</string>
+  <string name="btn_agree">Stem in en gaan voort</string>
+  <string name="btn_next_desc">Volgende</string>
+  <string name="xdev_from">van\nXDev STUDIOS</string>
+  <string name="enter_phone_title">Voer jou telefoonnommer in</string>
+  <string name="enter_phone_sub">CoLink sal jou nommer verifieer. Draagkoste kan geld.</string>
+  <string name="verify_next">Gaan voort</string>
+</resources>
