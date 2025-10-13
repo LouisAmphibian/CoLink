@@ -12,6 +12,9 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.CoLink">
         <activity
+          android:name=".ProfileCreationActivity"
+          android:exported="false" />
+        <activity
           android:name=".VerifiedConfirmationActivity"
           android:exported="false" />
         <activity

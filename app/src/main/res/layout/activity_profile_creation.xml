@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:padding="24dp"
+  android:background="@color/colink_bg"
+  tools:context=".ProfileCreationActivity">
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <!-- Back Button -->
+      <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_arrow_back"
+
+        android:layout_marginBottom="20dp" />
+
+      <!-- Title -->
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile Info"
+        android:textColor="#6DDAD3"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+      <!-- Subtitle -->
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please provide your name and optional photo"
+        android:textColor="#B0C4C4"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="40dp" />
+
+      <!-- Profile Picture Section -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="40dp">
+
+        <!-- Profile Picture Container -->
+        <RelativeLayout
+          android:layout_width="120dp"
+          android:layout_height="120dp"
+          android:background="@drawable/circle_background"
+          android:gravity="center">
+
+          <!-- Profile Image -->
+          <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_launcher_foreground" />
+
+          <!-- Add Photo Button -->
+          <ImageButton
+            android:id="@+id/addPhotoButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_menu"
+
+            android:scaleType="center" />
+
+        </RelativeLayout>
+
+        <!-- Add Photo Text -->
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Add Photo"
+          android:textColor="#6DDAD3"
+          android:textSize="14sp"
+          android:layout_marginTop="12dp" />
+
+      </LinearLayout>
+
+      <!-- Name Input Section -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="40dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Your Name"
+          android:textColor="#B0C4C4"
+          android:textSize="14sp"
+          android:layout_marginBottom="8dp" />
+
+        <EditText
+          android:id="@+id/nameEditText"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:background="@android:drawable/edit_text"
+          android:textColor="#000000"
+          android:textSize="16sp"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          android:hint="Enter your name"
+          android:singleLine="true" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+  </ScrollView>
+
+  <!-- Next Button at the bottom - Same structure as verification screen -->
+  <Button
+    android:id="@+id/nextButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Next"
+    android:backgroundTint="#1DB6A5"
+    android:textColor="#FFFFFF"
+    android:textSize="16sp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="16dp"
+    android:fontFamily="sans-serif-medium" />
+
+</LinearLayout>

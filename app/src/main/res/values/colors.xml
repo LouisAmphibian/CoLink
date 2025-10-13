@@ -13,5 +13,5 @@
     <color name="colink_text">#E6F7F6</color>     <!-- main text -->
     <color name="colink_subtext">#A7D7D4</color>  <!-- lighter subtext -->
     <color name="colink_primary2">#6DDAD3</color>
-
+    <color name="colink_secondary">#1DB6A5</color>
 </resources>
