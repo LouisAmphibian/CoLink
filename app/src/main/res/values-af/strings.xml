@@ -11,4 +11,42 @@
   <string name="enter_phone_title">Voer jou telefoonnommer in</string>
   <string name="enter_phone_sub">CoLink sal jou nommer verifieer. Draagkoste kan geld.</string>
   <string name="verify_next">Gaan voort</string>
+
+
+
+  <!-- Main Screens -->
+  <string name="chats">Geselsies</string>
+  <string name="settings">Instellings</string>
+  <string name="help">Help</string>
+  <string name="security">Sekuriteit</string>
+
+  <!-- Chat Screen -->
+  <string name="new_group">Nuwe Groep</string>
+  <string name="search">Soek</string>
+  <string name="no_groups_yet">Nog geen gebeurtenisgroepe nie</string>
+  <string name="create_group_prompt">Skep n nuwe groep om jou gebeurtenis te begin beplan</string>
+
+  <!-- New Group Screen -->
+  <string name="create_event_group">Skep Gebeurtenisgroep</string>
+  <string name="create">Skep</string>
+  <string name="event_details">Gebeurtenisbesonderhede</string>
+  <string name="event_name">Gebeurtenisnaam</string>
+  <string name="description">Beskrywing</string>
+  <string name="description_optional">Beskrywing (Opsioneel)</string>
+  <string name="event_date">Gebeurtenisdatum</string>
+  <string name="event_time">Gebeurtenistyd</string>
+  <string name="location">Ligging</string>
+  <string name="event_budget">Gebeurtenisbegroting (Opsioneel)</string>
+  <string name="target_amount">Teikenbedrag</string>
+
+  <!-- Invitations -->
+  <string name="invite_members">Nooi lede uit</string>
+  <string name="invite_via_whatsapp">Nooi via WhatsApp</string>
+  <string name="invite_description">Nooi mense uit jou kontakte via WhatsApp uit</string>
+  <string name="members_selected">%d lede gekies</string>
+
+  <!-- Messages -->
+  <string name="group_created">Gebeuregroep suksesvol geskep!</string>
+  <string name="error_creating_group">Fout met die skep van groep</string>
+  <string name="whatsapp_not_installed">WhatsApp is nie geïnstalleer nie. Installeer asseblief WhatsApp om lede uit te nooi.</string>
 </resources>

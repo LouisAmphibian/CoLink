@@ -1,15 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">CoLink</string>
-  <string name="welcome_title">Welcome to CoLink</string>
-  <string name="choose_language_sub">Choose your language to get started</string>
-  <string name="agree_title">Welcome to CoLink</string>
-  <string name="agree_privacy">Read our Privacy Policy. Tap "Agree and continue" to accept the Terms of Service</string>
-  <string name="btn_agree">Agree and continue</string>
-  <string name="btn_next_desc">Next</string>
-  <string name="xdev_from">from\nXDev STUDIOS</string>
+    <string name="app_name">CoLink</string>
+    <string name="welcome_title">Welcome to CoLink</string>
+    <string name="choose_language_sub">Choose your language to get started</string>
+    <string name="agree_title">Welcome to CoLink</string>
+    <string name="agree_privacy">Read our Privacy Policy. Tap "Agree and continue" to accept the Terms of Service</string>
+    <string name="btn_agree">Agree and continue</string>
+    <string name="btn_next_desc">Next</string>
+    <string name="xdev_from">from\nXDev STUDIOS</string>
 
-  <string name="enter_phone_title">Enter your phone number</string>
-  <string name="enter_phone_sub">CoLink will verify your number. Carrier charges may apply.</string>
-  <string name="verify_next">Next</string>
+    <string name="enter_phone_title">Enter your phone number</string>
+    <string name="enter_phone_sub">CoLink will verify your number. Carrier charges may apply.</string>
+    <string name="verify_next">Next</string>
+
+
+    <!-- Main Screens -->
+    <string name="chats">Chats</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="security">Security</string>
+
+    <!-- Chat Screen -->
+    <string name="new_group">New Group</string>
+    <string name="search">Search</string>
+    <string name="no_groups_yet">No event groups yet</string>
+    <string name="create_group_prompt">Create a new group to start planning your event</string>
+
+    <!-- New Group Screen -->
+    <string name="create_event_group">Create Event Group</string>
+    <string name="create">Create</string>
+    <string name="event_details">Event Details</string>
+    <string name="event_name">Event Name</string>
+    <string name="description">Description</string>
+    <string name="description_optional">Description (Optional)</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_time">Event Time</string>
+    <string name="location">Location</string>
+    <string name="event_budget">Event Budget (Optional)</string>
+    <string name="target_amount">Target Amount</string>
+
+    <!-- Invitations -->
+    <string name="invite_members">Invite Members</string>
+    <string name="invite_via_whatsapp">Invite via WhatsApp</string>
+    <string name="invite_description">Invite people from your contacts via WhatsApp</string>
+    <string name="members_selected">%d members selected</string>
+
+    <!-- Messages -->
+    <string name="group_created">Event group created successfully!</string>
+    <string name="error_creating_group">Error creating group</string>
+    <string name="whatsapp_not_installed">WhatsApp not installed. Please install WhatsApp to invite members.</string>
 </resources>

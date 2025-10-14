@@ -1,7 +1,6 @@
 package com.xdevstudio.colink
 
 import android.content.ContentValues
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -145,9 +144,9 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
                 saveNumberToSQLite(phoneNumber)  // Save the verified number locally
 
                 // TODO: Navigate to main activity after successful verification
-                val intent = Intent(this,ProfileCreationActivity::class.java)
-                startActivity(intent)
-                finish()
+                // val intent = Intent(this, MainActivity::class.java)
+                // startActivity(intent)
+                // finish()
             } else {
                 Toast.makeText(this, "Verification failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
             }
