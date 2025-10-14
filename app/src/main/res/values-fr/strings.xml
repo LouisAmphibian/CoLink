@@ -11,4 +11,42 @@
   <string name="enter_phone_title">Entrez votre numéro de téléphone</string>
   <string name="enter_phone_sub">CoLink vérifiera votre numéro. Des frais peuvent s\'appliquer.</string>
   <string name="verify_next">Continuer</string>
+
+
+
+  <!-- Main Screens -->
+  <string name="chats">Chats</string>
+  <string name="settings">Paramètres</string>
+  <string name="help">Aide</string>
+  <string name="security">Sécurité</string>
+
+  <!-- Chat Screen -->
+  <string name="new_group">Nouveau groupe</string>
+  <string name="search">Rechercher</string>
+  <string name="no_groups_yet">Aucun groupe d\'événements pour le moment</string>
+  <string name="create_group_prompt">Créez un nouveau groupe pour commencer à planifier votre événement</string>
+
+  <!-- New Group Screen -->
+  <string name="create_event_group">Créer un groupe d\'événements</string>
+  <string name="create">Créer</string>
+  <string name="event_details">Détails de l\'événement</string>
+  <string name="event_name">Nom de l\'événement</string>
+  <string name="description">Description</string>
+  <string name="description_optional">Description (Facultatif)</string>
+  <string name="event_date">Date de l\'événement</string>
+  <string name="event_time">Heure de l\'événement</string>
+  <string name="location">Emplacement</string>
+  <string name="event_budget">Budget de l\'événement (facultatif)</string>
+  <string name="target_amount">Montant cible</string>
+
+  <!-- Invitations -->
+  <string name="invite_members">Inviter des membres</string>
+  <string name="invite_via_whatsapp">Inviter via WhatsApp</string>
+  <string name="invite_description">Invite people from your contacts via WhatsApp</string>
+  <string name="members_selected">%d membres sélectionnés</string>
+
+  <!-- Messages -->
+  <string name="group_created">Groupe d\'événements créé avec succès!</string>
+  <string name="error_creating_group">Erreur lors de la création du groupe</string>
+  <string name="whatsapp_not_installed">WhatsApp n\'est pas installé. Veuillez installer WhatsApp pour inviter des membres</string>
 </resources>

@@ -34,7 +34,7 @@
             android:layout_height="28dp"
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_settings"
-            app:tint="@android:color/black" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +73,6 @@
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground">
 
-                <!--android:text="" is empty because the users initials will be added there-->
                 <TextView
                     android:id="@+id/profileIcon"
                     android:layout_width="48dp"
@@ -115,7 +114,7 @@
                     android:background="@drawable/circle_background"
                     android:backgroundTint="#5A8FA8"
                     android:src="@drawable/ic_chat"
-                    app:tint="@android:color/black" />
+                    app:tint="@android:color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -127,9 +126,9 @@
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
-            <!-- Help Option -->
+            <!-- Notifications Option -->
             <LinearLayout
-                android:id="@+id/helpOption"
+                android:id="@+id/notificationsOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -145,14 +144,45 @@
                     android:padding="12dp"
                     android:background="@drawable/circle_background"
                     android:backgroundTint="#4A7A92"
-                    android:src="@drawable/ic_help"
-                    app:tint="@android:color/black" />
+                    android:src="@drawable/ic_notifications"
+                    app:tint="@android:color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Help"
+                    android:text="Notifications"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- Privacy & Security Option -->
+            <LinearLayout
+                android:id="@+id/privacyOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#3A6580"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Privacy &amp; Security"
                     android:textSize="20sp"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium" />
@@ -175,9 +205,9 @@
                     android:layout_height="48dp"
                     android:padding="12dp"
                     android:background="@drawable/circle_background"
-                    android:backgroundTint="#3A6580"
-                    android:src="@drawable/ic_vpn_key"
-                    app:tint="@android:color/black" />
+                    android:backgroundTint="#2C5F7C"
+                    android:src="@drawable/ic_person"
+                    app:tint="@android:color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,6 +218,152 @@
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
+
+            <!-- Location Services Option -->
+            <LinearLayout
+                android:id="@+id/locationOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#1E4A5F"
+                    android:src="@drawable/ic_location"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Location Services"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- Help & Support Option -->
+            <LinearLayout
+                android:id="@+id/helpOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#4A7A92"
+                    android:src="@drawable/ic_help"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Help &amp; Support"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- Language Option -->
+            <LinearLayout
+                android:id="@+id/languageOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#5A8FA8"
+                    android:src="@drawable/ic_language"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:text="Language"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/currentLanguageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="English"
+                    android:textSize="14sp"
+                    android:textColor="#B0BEC5" />
+            </LinearLayout>
+
+            <!-- About Option -->
+            <LinearLayout
+                android:id="@+id/aboutOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="#3A6580"
+                    android:src="@drawable/ic_info"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="About"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- Logout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Logout"
+                android:textColor="@android:color/white"
+                app:strokeColor="@android:color/white"
+                app:icon="@drawable/ic_logout"
+                app:iconTint="@android:color/white" />
 
         </LinearLayout>
     </ScrollView>
