@@ -10,6 +10,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class ProfileCreationActivity : AppCompatActivity() {
 
@@ -20,7 +23,12 @@ class ProfileCreationActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var progressIndicator: ProgressBar
 
+
     private var profileImageUri: Uri? = null
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
+
 
     // Modern Activity Result API - replaces startActivityForResult
     private val imagePickerLauncher = registerForActivityResult(
@@ -42,6 +50,11 @@ class ProfileCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation)
+
+        //Initialize Firebase services
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        storage = FirebaseStorage.getInstance()
 
         initializeViews()
         setupClickListeners()
@@ -74,6 +87,11 @@ class ProfileCreationActivity : AppCompatActivity() {
     }
 
     private fun openImagePicker() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), 100)
+        } else {
+            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+        }
         imagePickerLauncher.launch("image/*")
     }
 
@@ -98,12 +116,77 @@ class ProfileCreationActivity : AppCompatActivity() {
     }
 
     private fun simulateProfileSave(name: String) {
-        // Replace with actual Firebase/API call
+        //saving profile
+        val currentUser = auth.currentUser
+
+        //check if user is authenticated or not
+        if (currentUser == null){
+            showToast("User not authenticated")
+            setLoadingState(false)
+            return
+        }
+
+        val userId = currentUser.uid
+        val phoneNumber = currentUser.phoneNumber ?: ""
+
+        //if there's a profile image, upload it first
+        if (profileImageUri != null){
+            uploadProfileImage(userId, name, phoneNumber)
+        }else{
+            //Save profile without image
+            saveUserProfileToFirestore(userId, name, phoneNumber, null)
+        }
+
         Handler(mainLooper).postDelayed({
             setLoadingState(false)
             showToast("Profile saved successfully!")
-            navigateToMainActivity()
+            navigateToChatActivity()
         }, 1500)
+    }
+
+    private fun uploadProfileImage(userId : String, name : String, phoneNumber: String){
+        val imageRef = storage.reference.child("profile_images/$userId.jpg")
+
+        imageRef.putFile(profileImageUri!!)
+            .addOnSuccessListener { taskSnapshot ->
+                //Get the download URL after successful upload
+                imageRef.downloadUrl.addOnSuccessListener { downloadUri->
+                    saveUserProfileToFirestore(userId, name, phoneNumber, downloadUri.toString())
+                }
+            }
+            .addOnFailureListener { exception ->
+                setLoadingState(false)
+                showToast("Failed to upload image: ${exception.message}")
+            }
+    }
+
+    private fun saveUserProfileToFirestore(userId: String, name: String, phoneNumber: String, profileImageUrl: String?){
+        val userProfile = hashMapOf(
+            "userId" to userId,
+            "name" to name,
+            "phoneNumber" to phoneNumber,
+            "profileImageUrl" to profileImageUrl,
+            "createdAt" to com.google.firebase.Timestamp.now(),
+            "updateAt" to com.google.firebase.Timestamp.now()
+        )
+
+        //logging to debug co-link
+        println("🔥🔥Attempting to save user profile:  $userProfile")
+
+        firestore.collection("users")
+            .document(userId)
+            .set(userProfile)
+            .addOnSuccessListener {
+                println("✅Profile saved successfully")
+                setLoadingState(false)
+                showToast("✅Profile saved successfully")
+                navigateToChatActivity()
+            }
+            .addOnFailureListener { exception ->
+                println("❌Failed to save profile ${exception.message}") //Debug
+                setLoadingState(false)
+                showToast("❌Failed to save profile ${exception.message}")
+            }
     }
 
     private fun setLoadingState(isLoading: Boolean) {
@@ -124,8 +207,8 @@ class ProfileCreationActivity : AppCompatActivity() {
         // If loading, back press is ignored - user must wait
     }
 
-    private fun navigateToMainActivity() {
-        Intent(this, MainActivity::class.java).apply {
+    private fun navigateToChatActivity() {
+        Intent(this, ChatActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(this)
         }
