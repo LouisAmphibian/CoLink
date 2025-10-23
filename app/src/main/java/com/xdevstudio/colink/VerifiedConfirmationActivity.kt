@@ -11,11 +11,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 class VerifiedConfirmationActivity : AppCompatActivity() {
 
     // Firebase authentication variables
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var verificationId: String
     private lateinit var phoneNumber: String
 
@@ -23,8 +25,9 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verifiedconfirmation)
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         // Retrieve data passed from VerificationActivity (the number + verification ID)
         verificationId = intent.getStringExtra("verificationId") ?: ""
@@ -62,7 +65,7 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
                 if (verificationId == "test_verification_id" && otpCode == "123456") {
                     Toast.makeText(this, "Test verification successful!", Toast.LENGTH_SHORT).show()
                     saveNumberToSQLite(phoneNumber)
-                    // TODO: Navigate to main activity
+                    checkIfProfileExists()
                 } else {
                     val credential = PhoneAuthProvider.getCredential(verificationId, otpCode)
                     signInWithCredential(credential)  // Go verify with Firebase
@@ -76,8 +79,7 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
         resendText.setOnClickListener {
             // TODO: Implement resend code logic
             Toast.makeText(this, "Code resent to $phoneNumber", Toast.LENGTH_SHORT).show()
-
-        //Might want to restart the timer here
+            // Might want to restart the timer here
         }
 
         // Start countdown timer (example implementation)
@@ -102,7 +104,6 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
                             verifyButton.performClick()
                         }
                     } else if (s?.length == 0 && i > 0) {
-
                         // Move to previous field when backspace is pressed on empty field
                         otpInputs[i - 1].requestFocus()
                     }
@@ -143,15 +144,52 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 Toast.makeText(this, "Verification successful!", Toast.LENGTH_SHORT).show()
                 saveNumberToSQLite(phoneNumber)  // Save the verified number locally
-
-                // TODO: Navigate to main activity after successful verification
-                val intent = Intent(this,ProfileCreationActivity::class.java)
-                startActivity(intent)
-                finish()
+                checkIfProfileExists()
             } else {
                 Toast.makeText(this, "Verification failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun checkIfProfileExists() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            firestore.collection("users")
+                .document(currentUser.uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        // Profile exists, go directly to chat
+                        println("✅ Profile already exists, navigating to ChatActivity")
+                        navigateToChatActivity()
+                    } else {
+                        // No profile exists, go to profile creation
+                        println("⚠️ No profile found, navigating to ProfileCreation")
+                        navigateToProfileCreation()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // On error, go to profile creation
+                    println("❌ Error checking profile: ${exception.message}")
+                    navigateToProfileCreation()
+                }
+        } else {
+            navigateToProfileCreation()
+        }
+    }
+
+    private fun navigateToProfileCreation() {
+        val intent = Intent(this, ProfileCreationActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToChatActivity() {
+        // Go to MainActivity instead of directly to ChatActivity
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     // Save verified phone number to SQLite database
@@ -161,7 +199,5 @@ class VerifiedConfirmationActivity : AppCompatActivity() {
         val values = ContentValues().apply { put("phone", phone) }
         db.insert("users", null, values)
         db.close()
-
-        // TODO: Add more user data or handle this differently
     }
 }

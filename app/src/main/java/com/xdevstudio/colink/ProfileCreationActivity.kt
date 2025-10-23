@@ -110,11 +110,12 @@ class ProfileCreationActivity : AppCompatActivity() {
             else -> {
                 setLoadingState(true)
                 // Simulate API call or database operation
-                simulateProfileSave(name)
+                saveProfileToFirebase(name)
             }
         }
     }
 
+    /*
     private fun simulateProfileSave(name: String) {
         //saving profile
         val currentUser = auth.currentUser
@@ -143,6 +144,32 @@ class ProfileCreationActivity : AppCompatActivity() {
             navigateToChatActivity()
         }, 1500)
     }
+*/
+
+    private fun saveProfileToFirebase(name: String) {
+        val currentUser = auth.currentUser
+
+        // Check if user is authenticated or not
+        if (currentUser == null) {
+            showToast("User not authenticated")
+            setLoadingState(false)
+            // Redirect to verification
+            navigateToVerificationActivity()
+            return
+        }
+
+        val userId = currentUser.uid
+        val phoneNumber = currentUser.phoneNumber ?: ""
+
+        // If there's a profile image, upload it first
+        if (profileImageUri != null) {
+            uploadProfileImage(userId, name, phoneNumber)
+        } else {
+            // Save profile without image
+            saveUserProfileToFirestore(userId, name, phoneNumber, null)
+        }
+    }
+
 
     private fun uploadProfileImage(userId : String, name : String, phoneNumber: String){
         val imageRef = storage.reference.child("profile_images/$userId.jpg")
@@ -161,13 +188,13 @@ class ProfileCreationActivity : AppCompatActivity() {
     }
 
     private fun saveUserProfileToFirestore(userId: String, name: String, phoneNumber: String, profileImageUrl: String?){
-        val userProfile = hashMapOf(
-            "userId" to userId,
-            "name" to name,
-            "phoneNumber" to phoneNumber,
-            "profileImageUrl" to profileImageUrl,
-            "createdAt" to com.google.firebase.Timestamp.now(),
-            "updateAt" to com.google.firebase.Timestamp.now()
+        val userProfile = User(
+            userId = userId,
+            name = name,
+            phoneNumber = phoneNumber,
+            profileImageUrl = profileImageUrl,
+            createdAt = com.google.firebase.Timestamp.now(),
+            updatedAt = com.google.firebase.Timestamp.now()
         )
 
         //logging to debug co-link
@@ -207,11 +234,19 @@ class ProfileCreationActivity : AppCompatActivity() {
         // If loading, back press is ignored - user must wait
     }
 
+    private fun navigateToVerificationActivity() {
+        val intent = Intent(this, VerificationActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
+
     private fun navigateToChatActivity() {
-        Intent(this, ChatActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(this)
-        }
+        // Instead of going directly to ChatActivity, go to MainActivity which will show splash then chat
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         finish()
     }
 
