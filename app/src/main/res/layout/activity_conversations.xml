@@ -32,10 +32,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_add"
+
             android:contentDescription="New Chat"
             app:tint="@android:color/white" />
-    </LinearLayout>
+    </LinearLayout> <!-- android:src="@drawable/ic_add"-->
 
     <!-- Search Bar -->
     <com.google.android.material.card.MaterialCardView
