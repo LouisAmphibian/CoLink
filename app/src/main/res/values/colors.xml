@@ -13,5 +13,21 @@
     <color name="colink_text">#E6F7F6</color>     <!-- main text -->
     <color name="colink_subtext">#A7D7D4</color>  <!-- lighter subtext -->
     <color name="colink_primary2">#6DDAD3</color>
-    <color name="colink_secondary">#1DB6A5</color>
+
+    <!-- Primary Colors -->
+    <color name="primary_blue">#2C5F7C</color>
+    <color name="light_blue">#3A7CA5</color>
+    <color name="accent_blue">#7EC8E3</color>
+    <color name="light_bg">#E3F2FD</color>
+
+    <!-- Accent Colors -->
+    <color name="step_blue">#4DD0E1</color>
+    <color name="activity_red">#FF6B6B</color>
+    <color name="active_green">#4CAF50</color>
+    <color name="whatsapp_green">#25D366</color>
+
+    <!-- Text Colors -->
+    <color name="gray_text">#757575</color>
+    <color name="gray_light">#9E9E9E</color>
+
 </resources>

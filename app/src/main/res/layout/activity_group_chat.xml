@@ -11,7 +11,7 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_blue"
+        android:background="@color/colink_bg"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingStart="4dp"
