@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(androidx.appcompat.R.id.action_bar_root)) { v, insets ->
+        val rootView = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.main)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
