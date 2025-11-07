@@ -40,12 +40,13 @@ apply(plugin = "com.google.gms.google-services")
 
 
 dependencies {
+    implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.firebase:firebase-analytics:21.5.1")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-firestore:24.11.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
-
     implementation("com.google.android.material:material:1.11.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)

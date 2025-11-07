@@ -174,55 +174,68 @@
 
             <!-- WhatsApp Integration Card -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/white"
-                android:layout_marginBottom="16dp">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="12dp"
+              app:cardElevation="4dp"
+              app:cardBackgroundColor="@android:color/white"
+              android:layout_marginBottom="16dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Invite Members"
-                        android:textSize="18sp"
-                        android:textColor="#212121"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="8dp" />
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Invite Members"
+                      android:textSize="18sp"
+                      android:textColor="#212121"
+                      android:textStyle="bold"
+                      android:layout_marginBottom="8dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Invite people from your contacts via WhatsApp"
-                        android:textSize="14sp"
-                        android:textColor="#757575"
-                        android:layout_marginBottom="16dp" />
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Invite people to join your event group"
+                      android:textSize="14sp"
+                      android:textColor="#757575"
+                      android:layout_marginBottom="16dp" />
 
+                    <!-- Invite via WhatsApp -->
                     <Button
-                        android:id="@+id/whatsappInviteButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Invite via WhatsApp"
-                        android:textColor="@android:color/white"
-                        app:icon="@drawable/ic_whatsapp"
-                        app:iconTint="@android:color/white"
-                        android:backgroundTint="#25D366" />
+                      android:id="@+id/whatsappInviteButton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Invite via WhatsApp"
+                      android:textColor="@android:color/white"
+                      app:icon="@drawable/ic_whatsapp"
+                      app:iconTint="@android:color/white"
+                      android:backgroundTint="#25D366"
+                      android:layout_marginBottom="8dp" />
+
+                    <!-- Invite via Contacts -->
+                    <Button
+                      android:id="@+id/contactInviteButton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Invite from Contacts"
+                      android:textColor="@android:color/white"
+                      app:icon="@drawable/ic_contact"
+                      app:iconTint="@android:color/white"
+                      android:backgroundTint="#2C5F7C" />
 
                     <TextView
-                        android:id="@+id/selectedMembersCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0 members selected"
-                        android:textSize="12sp"
-                        android:textColor="#9E9E9E"
-                        android:layout_marginTop="8dp"
-                        android:layout_gravity="center_horizontal" />
+                      android:id="@+id/selectedMembersCount"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="0 members selected"
+                      android:textSize="12sp"
+                      android:textColor="#9E9E9E"
+                      android:layout_marginTop="8dp"
+                      android:layout_gravity="center_horizontal" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

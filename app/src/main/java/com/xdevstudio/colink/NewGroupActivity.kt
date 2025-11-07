@@ -8,6 +8,10 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +28,7 @@ class NewGroupActivity : AppCompatActivity() {
     private lateinit var budgetInput: TextInputEditText
     private lateinit var createButton: Button
     private lateinit var whatsappInviteButton: Button
+    private lateinit var contactInviteButton: Button
     private lateinit var selectedMembersCount: TextView
     private lateinit var backButton: ImageButton
 
@@ -32,9 +37,11 @@ class NewGroupActivity : AppCompatActivity() {
 
     private val selectedContacts = mutableListOf<Contact>()
     private val calendar = Calendar.getInstance()
+    private var inviteMode: String = "whatsapp" // "whatsapp" or "colink"
 
     companion object {
         const val CONTACT_PICKER_REQUEST = 1001
+        const val PLACES_AUTOCOMPLETE_REQUEST = 1002
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +52,15 @@ class NewGroupActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+        // Initialize Places API (replace with your actual API key)
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, "YOUR_GOOGLE_PLACES_API_KEY")
+        }
+
         initializeViews()
         setupClickListeners()
         setupDateAndTimePickers()
+        setupLocationAutocomplete()
     }
 
     private fun initializeViews() {
@@ -59,6 +72,7 @@ class NewGroupActivity : AppCompatActivity() {
         budgetInput = findViewById(R.id.budgetInput)
         createButton = findViewById(R.id.createButton)
         whatsappInviteButton = findViewById(R.id.whatsappInviteButton)
+        contactInviteButton = findViewById(R.id.contactInviteButton)
         selectedMembersCount = findViewById(R.id.selectedMembersCount)
         backButton = findViewById(R.id.backButton)
 
@@ -67,14 +81,34 @@ class NewGroupActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         backButton.setOnClickListener { finish() }
-
         createButton.setOnClickListener { createGroup() }
-        whatsappInviteButton.setOnClickListener { openContactPicker() }
+        whatsappInviteButton.setOnClickListener {
+            inviteMode = "whatsapp"
+            openContactPicker()
+        }
+        contactInviteButton.setOnClickListener {
+            inviteMode = "colink"
+            openContactPicker()
+        }
 
-        // Enable create button when event name is entered
         eventNameInput.setOnKeyListener { _, _, _ ->
             validateForm()
             false
+        }
+    }
+
+    private fun setupLocationAutocomplete() {
+        eventLocationInput.setOnClickListener {
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .build(this)
+            startActivityForResult(intent, PLACES_AUTOCOMPLETE_REQUEST)
+        }
+
+        eventLocationInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                eventLocationInput.performClick()
+            }
         }
     }
 
@@ -129,11 +163,27 @@ class NewGroupActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == CONTACT_PICKER_REQUEST && resultCode == RESULT_OK) {
-            data?.data?.let { contactUri ->
-                val contact = getContactDetails(contactUri)
-                contact?.let {
-                    showContactSelectionDialog(it)
+        when (requestCode) {
+            CONTACT_PICKER_REQUEST -> {
+                if (resultCode == RESULT_OK) {
+                    data?.data?.let { contactUri ->
+                        val contact = getContactDetails(contactUri)
+                        contact?.let {
+                            showContactSelectionDialog(it)
+                        }
+                    }
+                }
+            }
+            PLACES_AUTOCOMPLETE_REQUEST -> {
+                if (resultCode == RESULT_OK) {
+                    val place = Autocomplete.getPlaceFromIntent(data!!)
+                    eventLocationInput.setText(place.address ?: place.name)
+                } else if (resultCode == RESULT_CANCELED) {
+                    // User canceled the autocomplete
+                    // You can add a fallback here if needed
+                } else {
+                    // Handle other result codes
+                    Toast.makeText(this, "Location search failed", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -154,7 +204,6 @@ class NewGroupActivity : AppCompatActivity() {
                     val nameColumnIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                     val hasPhoneColumnIndex = it.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
 
-                    // Check if columns exist
                     if (idColumnIndex == -1 || nameColumnIndex == -1 || hasPhoneColumnIndex == -1) {
                         return null
                     }
@@ -162,7 +211,6 @@ class NewGroupActivity : AppCompatActivity() {
                     val id = it.getString(idColumnIndex)
                     val name = it.getString(nameColumnIndex) ?: "Unknown"
 
-                    // Get phone number
                     var phoneNumber = ""
                     if (it.getInt(hasPhoneColumnIndex) > 0) {
                         val phoneProjection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
@@ -196,10 +244,14 @@ class NewGroupActivity : AppCompatActivity() {
     }
 
     private fun showContactSelectionDialog(contact: Contact) {
-        // Check if contact is already on CoLink
         checkIfContactIsOnCoLink(contact) { isOnCoLink, userId ->
             contact.isOnCoLink = isOnCoLink
             contact.userId = userId
+
+            if (inviteMode == "colink" && !isOnCoLink) {
+                Toast.makeText(this, "${contact.name} is not on CoLink. Please use WhatsApp invite.", Toast.LENGTH_SHORT).show()
+                return@checkIfContactIsOnCoLink
+            }
 
             val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Add ${contact.name}")
@@ -212,14 +264,12 @@ class NewGroupActivity : AppCompatActivity() {
                 )
                 .setPositiveButton(if (isOnCoLink) "Add" else "Invite") { _, _ ->
                     if (isOnCoLink) {
-                        // Add to selected contacts
                         if (!selectedContacts.any { it.id == contact.id }) {
                             selectedContacts.add(contact)
                             updateSelectedMembersCount()
                             Toast.makeText(this, "Added ${contact.name}", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        // Send WhatsApp invite
                         sendWhatsAppInvite(contact)
                     }
                 }
@@ -254,7 +304,6 @@ class NewGroupActivity : AppCompatActivity() {
     }
 
     private fun sendWhatsAppInvite(contact: Contact) {
-        // Filter phone number to get only digits
         val phoneDigits = contact.phoneNumber.filter { it.isDigit() }
         if (phoneDigits.isEmpty()) {
             Toast.makeText(this, "No valid phone number found for ${contact.name}", Toast.LENGTH_SHORT).show()
@@ -273,7 +322,6 @@ class NewGroupActivity : AppCompatActivity() {
             Toast.makeText(this, "Opening WhatsApp to invite ${contact.name}", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
-            // Fallback: share via other means
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
@@ -288,7 +336,7 @@ class NewGroupActivity : AppCompatActivity() {
             return
         }
 
-        if (selectedContacts.size < 1) { // At least 1 other person + creator = 2 total
+        if (selectedContacts.size < 1) {
             Toast.makeText(this, "Please add at least one person to the group", Toast.LENGTH_SHORT).show()
             return
         }
@@ -299,17 +347,18 @@ class NewGroupActivity : AppCompatActivity() {
             return
         }
 
-        // Create group object
         val groupId = firestore.collection("groups").document().id
+
         val group = Group(
             id = groupId,
             name = eventNameInput.text.toString().trim(),
             description = eventDescriptionInput.text.toString().trim(),
             date = calendar.time,
+            time = eventTimeInput.text.toString().trim(),
             location = eventLocationInput.text.toString().trim(),
             budget = budgetInput.text.toString().toDoubleOrNull() ?: 0.0,
             createdBy = currentUser.uid,
-            status = "pending", // pending until 2+ people accept
+            status = "pending",
             members = mutableListOf(GroupMember(currentUser.uid, "admin", accepted = true)),
             invitedMembers = selectedContacts.map { contact ->
                 InvitedMember(
@@ -317,36 +366,49 @@ class NewGroupActivity : AppCompatActivity() {
                     name = contact.name,
                     isOnCoLink = contact.isOnCoLink,
                     userId = contact.userId,
+                    invitedVia = if (contact.isOnCoLink) "colink" else "whatsapp",
                     invitedAt = Date()
                 )
             }.toMutableList(),
             createdAt = Date(),
-            updatedAt = Date()
+            updatedAt = Date(),
+            canChat = false
         )
 
-        // Save to Firestore
         firestore.collection("groups")
             .document(groupId)
             .set(group)
             .addOnSuccessListener {
+                createWelcomeMessage(groupId, currentUser.uid)
                 Toast.makeText(this, "Group created successfully!", Toast.LENGTH_SHORT).show()
-
-                // Send invites to CoLink users immediately
                 sendCoLinkInvites(group)
-
-                // Navigate back to chats
-                finish()
+                navigateToGroupChat(groupId)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to create group: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
+    private fun createWelcomeMessage(groupId: String, userId: String) {
+        val message = mapOf(
+            "groupId" to groupId,
+            "senderId" to userId,
+            "text" to "Group created! Waiting for members to accept invites... Chat will be enabled when 2 or more members join.",
+            "type" to "system",
+            "timestamp" to Date(),
+            "isSystemMessage" to true
+        )
+
+        firestore.collection("groups")
+            .document(groupId)
+            .collection("messages")
+            .add(message)
+    }
+
     private fun sendCoLinkInvites(group: Group) {
         val coLinkMembers = group.invitedMembers.filter { it.isOnCoLink && it.userId != null }
 
         coLinkMembers.forEach { invitedMember ->
-            // Send notification to the user
             val notification = mapOf(
                 "type" to "group_invite",
                 "groupId" to group.id,
@@ -377,5 +439,13 @@ class NewGroupActivity : AppCompatActivity() {
 
     private fun normalizePhoneNumber(phoneNumber: String): String {
         return phoneNumber.replace("[^0-9+]".toRegex(), "")
+    }
+
+    private fun navigateToGroupChat(groupId: String) {
+        val intent = Intent(this, GroupChatActivity::class.java)
+        intent.putExtra("groupId", groupId)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 }

@@ -36,7 +36,7 @@
             android:layout_height="40dp"
             android:background="@drawable/circle_background"
             android:backgroundTint="#7EC8E3"
-            android:text="J"
+            android:text="C"
             android:textSize="18sp"
             android:textColor="@android:color/white"
             android:gravity="center"
@@ -54,7 +54,7 @@
                 android:id="@+id/userNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="John Doe"
+                android:text="Carnival City Group"
                 android:textSize="18sp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -62,12 +62,12 @@
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/userStatusText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                android:textSize="12sp"
-                android:textColor="#E0E0E0" />
+              android:id="@+id/userStatusText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="2 members are Online"
+              android:textColor="#E0E0E0"
+              android:textSize="12sp" />
         </LinearLayout>
 
         <ImageButton

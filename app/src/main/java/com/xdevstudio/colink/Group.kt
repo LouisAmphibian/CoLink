@@ -7,6 +7,7 @@ data class Group(
     val name: String = "",
     val description: String = "",
     val date: Date = Date(),
+    val time: String = "",
     val location: String = "",
     val budget: Double = 0.0,
     val createdBy: String = "",
@@ -14,7 +15,8 @@ data class Group(
     val members: MutableList<GroupMember> = mutableListOf(),
     val invitedMembers: MutableList<InvitedMember> = mutableListOf(),
     val createdAt: Date = Date(),
-    val updatedAt: Date = Date()
+    val updatedAt: Date = Date(),
+    val canChat : Boolean = false
 )
 
 data class GroupMember(
