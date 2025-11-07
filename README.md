@@ -80,3 +80,9 @@ By combining secure payments, chat, location sharing, and gamification, CoLink p
 -Notifications: Firebase Cloud Messaging
 -Integrations: WhatsApp API, Payment Gateway APIs, OpenWeatherMap
 
+## 📠New added features
+-Real-time weather notifications
+-Finding event location
+-Invitation via WhatsApp and contacts
+-Group chat for invited members
+
