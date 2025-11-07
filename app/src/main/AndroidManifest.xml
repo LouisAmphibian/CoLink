@@ -69,6 +69,7 @@
     <activity
       android:name=".ProfileCreationActivity"
       android:exported="false" />
+    <!--Verification-->
     <activity
       android:name=".VerifiedConfirmationActivity"
       android:exported="false" />
