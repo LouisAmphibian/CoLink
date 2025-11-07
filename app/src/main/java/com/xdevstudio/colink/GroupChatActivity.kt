@@ -84,8 +84,10 @@ class GroupChatActivity : AppCompatActivity() {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    val group = snapshot.toObject(Group::class.java)
-                    group?.let { updateUI(it) }
+                    val group = snapshot.toObject(Group::class.java)?.copy(id = snapshot.id)
+                    group?.let {
+                        updateUI(it)
+                    }
                 }
             }
     }
@@ -93,26 +95,30 @@ class GroupChatActivity : AppCompatActivity() {
     private fun updateUI(group: Group) {
         groupNameText.text = group.name
 
-        // Update status text
-        val acceptedMembers = group.members.count { it.accepted }
-        val totalMembers = group.members.size + group.invitedMembers.size
+        // Calculate accepted members
+        val acceptedExistingMembers = group.members.count { it.accepted }
+        val acceptedInvitedMembers = group.invitedMembers.count { it.status == "accepted" }
+        val totalAccepted = acceptedExistingMembers + acceptedInvitedMembers
+        val totalExpected = group.members.size + group.invitedMembers.size
 
-        when (group.status) {
-            "pending" -> {
-                groupStatusText.text = "Pending: $acceptedMembers/$totalMembers members accepted"
+        when {
+            totalAccepted >= 2 -> {
+                groupStatusText.text = "$totalAccepted members"
+                messageInput.isEnabled = true
+                sendButton.isEnabled = true
+                messageInput.hint = "Type a message..."
+
+                // Update group status in Firestore if needed
+                if (group.status != "active") {
+                    firestore.collection("groups").document(groupId)
+                        .update("status", "active", "canChat", true)
+                }
+            }
+            else -> {
+                groupStatusText.text = "Pending: $totalAccepted/$totalExpected members accepted"
                 messageInput.isEnabled = false
                 sendButton.isEnabled = false
                 messageInput.hint = "Chat will be enabled when 2+ members join"
-            }
-            "active" -> {
-                groupStatusText.text = "$acceptedMembers members"
-                val canChat = acceptedMembers >= 2
-                messageInput.isEnabled = canChat
-                sendButton.isEnabled = canChat
-                messageInput.hint = if (canChat) "Type a message..." else "Need 2+ members to chat"
-            }
-            else -> {
-                groupStatusText.text = group.status
             }
         }
 

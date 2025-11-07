@@ -32,5 +32,6 @@ data class InvitedMember(
     val isOnCoLink: Boolean = false,
     val userId: String? = null,
     val invitedAt: Date = Date(),
-    val invitedVia: String = "whatsapp" // whatsapp, colink
+    val invitedVia: String = "whatsapp", // whatsapp, colink
+    var status: String = "pending"
 )

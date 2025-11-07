@@ -8,10 +8,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -37,11 +33,11 @@ class NewGroupActivity : AppCompatActivity() {
 
     private val selectedContacts = mutableListOf<Contact>()
     private val calendar = Calendar.getInstance()
-    private var inviteMode: String = "whatsapp" // "whatsapp" or "colink"
+    private var inviteMode: String = "whatsapp"
 
     companion object {
         const val CONTACT_PICKER_REQUEST = 1001
-        const val PLACES_AUTOCOMPLETE_REQUEST = 1002
+        const val LOCATION_SELECTION_REQUEST = 1002
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,15 +48,10 @@ class NewGroupActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Initialize Places API (replace with your actual API key)
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, "YOUR_GOOGLE_PLACES_API_KEY")
-        }
-
         initializeViews()
         setupClickListeners()
         setupDateAndTimePickers()
-        setupLocationAutocomplete()
+        setupLocationSelection()
     }
 
     private fun initializeViews() {
@@ -97,12 +88,10 @@ class NewGroupActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupLocationAutocomplete() {
+    private fun setupLocationSelection() {
         eventLocationInput.setOnClickListener {
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
-            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                .build(this)
-            startActivityForResult(intent, PLACES_AUTOCOMPLETE_REQUEST)
+            val intent = Intent(this, LocationSelectionActivity::class.java)
+            startActivityForResult(intent, LOCATION_SELECTION_REQUEST)
         }
 
         eventLocationInput.setOnFocusChangeListener { _, hasFocus ->
@@ -174,16 +163,15 @@ class NewGroupActivity : AppCompatActivity() {
                     }
                 }
             }
-            PLACES_AUTOCOMPLETE_REQUEST -> {
+            LOCATION_SELECTION_REQUEST -> {
                 if (resultCode == RESULT_OK) {
-                    val place = Autocomplete.getPlaceFromIntent(data!!)
-                    eventLocationInput.setText(place.address ?: place.name)
-                } else if (resultCode == RESULT_CANCELED) {
-                    // User canceled the autocomplete
-                    // You can add a fallback here if needed
-                } else {
-                    // Handle other result codes
-                    Toast.makeText(this, "Location search failed", Toast.LENGTH_SHORT).show()
+                    data?.let { intent ->
+                        val address = intent.getStringExtra(LocationSelectionActivity.EXTRA_SELECTED_ADDRESS)
+                        address?.let {
+                            eventLocationInput.setText(it)
+                            validateForm()
+                        }
+                    }
                 }
             }
         }
@@ -375,6 +363,10 @@ class NewGroupActivity : AppCompatActivity() {
             canChat = false
         )
 
+        // Show loading
+        createButton.isEnabled = false
+        createButton.text = "Creating..."
+
         firestore.collection("groups")
             .document(groupId)
             .set(group)
@@ -386,6 +378,8 @@ class NewGroupActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to create group: ${e.message}", Toast.LENGTH_SHORT).show()
+                createButton.isEnabled = true
+                createButton.text = "Create"
             }
     }
 
@@ -427,7 +421,8 @@ class NewGroupActivity : AppCompatActivity() {
     private fun validateForm(): Boolean {
         val isValid = eventNameInput.text?.isNotEmpty() == true &&
                 eventDateInput.text?.isNotEmpty() == true &&
-                eventTimeInput.text?.isNotEmpty() == true
+                eventTimeInput.text?.isNotEmpty() == true &&
+                eventLocationInput.text?.isNotEmpty() == true
 
         createButton.isEnabled = isValid
         return isValid
@@ -444,7 +439,6 @@ class NewGroupActivity : AppCompatActivity() {
     private fun navigateToGroupChat(groupId: String) {
         val intent = Intent(this, GroupChatActivity::class.java)
         intent.putExtra("groupId", groupId)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()
     }
