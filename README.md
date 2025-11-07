@@ -73,16 +73,17 @@ By combining secure payments, chat, location sharing, and gamification, CoLink p
 ---
 
 ## 📊 Tech Stack
--Frontend: Android (Kotlin/Java, Material Design)
--Backend: Node.js with Express (REST APIs)
--Database: Firebase Firestore + RoomDB (offline sync)
--Authentication: Firebase Auth / OAuth 2.0 + biometrics
--Notifications: Firebase Cloud Messaging
--Integrations: WhatsApp API, Payment Gateway APIs, OpenWeatherMap
+- Frontend: Android (Kotlin/Java, Material Design)
+- Backend: Node.js with Express (REST APIs)
+- Database: Firebase Firestore + RoomDB (offline sync)
+- Authentication: Firebase Auth / OAuth 2.0 + biometrics
+- Notifications: Firebase Cloud Messaging
+- Integrations: WhatsApp API, Payment Gateway APIs, OpenWeatherMap
 
+---
 ## 📠New added features
--Real-time weather notifications
--Finding event location
--Invitation via WhatsApp and contacts
--Group chat for invited members
+- Real-time weather notifications
+- Finding event location
+- Invitation via WhatsApp and contacts
+-  Group chat for invited members
 
