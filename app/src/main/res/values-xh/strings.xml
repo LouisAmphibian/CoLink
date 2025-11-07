@@ -17,6 +17,7 @@
 
 
   <!-- Main Screens -->
+  <string name="monitoring_weather_conditions">Ukubeka iliso kwiimeko zemozulu ukuze ufumane izilumkiso</string>
   <string name="chats">Chats</string>
   <string name="settings">Settings</string>
   <string name="help">Help</string>
@@ -51,4 +52,9 @@
   <string name="group_created">Event group created successfully!</string>
   <string name="error_creating_group">Error creating group</string>
   <string name="whatsapp_not_installed">WhatsApp not installed. Please install WhatsApp to invite members.</string>
+    <string name="weather_notifications">Izaziso Zemozulu</string>
+  <string name="notifications_enabled">Izaziso zemozulu zivuliwe</string>
+  <string name="notifications_disabled">Izaziso zemozulu zivaliwe</string>
+  <string name="notification_permission_required">Imvume yezaziso iyimfuneko kwizilumkiso zemozulu</string>
+  <string name="weather_monitoring">Uhlalutyo Lomso</string>
 </resources>

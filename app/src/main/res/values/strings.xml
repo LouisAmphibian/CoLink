@@ -13,6 +13,16 @@
     <string name="enter_phone_sub">CoLink will verify your number. Carrier charges may apply.</string>
     <string name="verify_next">Next</string>
 
+    <!--Weather Notification-->
+    <!-- Add these strings -->
+    <string name="weather_notifications">Weather Notifications</string>
+    <string name="notifications_enabled">Weather notifications enabled</string>
+    <string name="notifications_disabled">Weather notifications disabled</string>
+    <string name="notification_permission_required">Notification permission required for weather alerts</string>
+    <string name="weather_monitoring">Weather Monitoring</string>
+    <string name="monitoring_weather_conditions">Monitoring weather conditions for alerts</string>
+
+
 
     <!-- Main Screens -->
     <string name="chats">Chats</string>

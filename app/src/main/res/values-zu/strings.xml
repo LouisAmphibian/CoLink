@@ -16,7 +16,13 @@
 
 
   <!-- Main Screens -->
-  <string name="chats">Chats</string>
+  <string name="weather_notifications">Izaziso Zezulu</string>
+  <string name="notifications_enabled">Izaziso zesimo sezulu zivuliwe</string>
+  <string name="notifications_disabled">Izaziso zesimo sezulu zikhubaziwe</string>
+  <string name="notification_permission_required">Udinga imvume yezaziso ukuze uthole izexwayiso zesimo sezulu</string>
+  <string name="weather_monitoring">Ukuqapha Isimo Sezulu</string>
+  <string name="monitoring_weather_conditions">Ukuhlola izimo zezulu ukuze uthole izaziso</string>
+    <string name="chats">Chats</string>
   <string name="settings">Settings</string>
   <string name="help">Help</string>
   <string name="security">Security</string>

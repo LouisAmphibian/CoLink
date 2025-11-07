@@ -15,6 +15,7 @@
 
 
   <!-- Main Screens -->
+  <string name="monitoring_weather_conditions">Surveillance des conditions météorologiques pour les alertes</string>
   <string name="chats">Chats</string>
   <string name="settings">Paramètres</string>
   <string name="help">Aide</string>
@@ -49,4 +50,9 @@
   <string name="group_created">Groupe d\'événements créé avec succès!</string>
   <string name="error_creating_group">Erreur lors de la création du groupe</string>
   <string name="whatsapp_not_installed">WhatsApp n\'est pas installé. Veuillez installer WhatsApp pour inviter des membres</string>
+    <string name="weather_notifications">Notifications météorologiques</string>
+  <string name="notifications_enabled">Notifications météo activées</string>
+  <string name="notifications_disabled">Notifications météo désactivées</string>
+  <string name="notification_permission_required">Autorisation de notification requise pour les alertes météorologiques</string>
+  <string name="weather_monitoring">Surveillance météorologique</string>
 </resources>

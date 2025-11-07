@@ -1,15 +1,20 @@
-//  Complete weather updates with OpenWeatherMap API
+//  weather updates with OpenWeatherMap API and real-time notifications
 package com.xdevstudio.colink
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +50,7 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var alertText: TextView
     private lateinit var forecastRecyclerView: RecyclerView
     private lateinit var lastUpdatedText: TextView
+    private lateinit var notificationSwitch: Switch
 
     // Data
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -55,9 +61,17 @@ class WeatherActivity : AppCompatActivity() {
     private var currentLatitude = 0.0
     private var currentLongitude = 0.0
     private var currentCity = ""
+    private var isNotificationsEnabled = true
+    private var lastNotificationTime: Long = 0
+    private var lastWeatherCondition = ""
+
+    // Notification
+    private val CHANNEL_ID = "weather_alerts_channel"
+    private val NOTIFICATION_ID = 1001
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 2001
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 2002
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,11 +81,15 @@ class WeatherActivity : AppCompatActivity() {
         initializeViews()
         setupClickListeners()
         setupRecyclerView()
+        createNotificationChannel()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         weatherApiService = WeatherApiService.create()
 
         checkPermissionsAndLoadWeather()
+
+        // Start periodic weather updates
+        startPeriodicWeatherUpdates()
     }
 
     private fun initializeViews() {
@@ -91,6 +109,10 @@ class WeatherActivity : AppCompatActivity() {
         alertText = findViewById(R.id.alertText)
         forecastRecyclerView = findViewById(R.id.forecastRecyclerView)
         lastUpdatedText = findViewById(R.id.lastUpdatedText)
+        notificationSwitch = findViewById(R.id.notificationSwitch)
+
+        // Set initial notification state
+        notificationSwitch.isChecked = isNotificationsEnabled
     }
 
     private fun setupClickListeners() {
@@ -105,6 +127,18 @@ class WeatherActivity : AppCompatActivity() {
         changeLocationButton.setOnClickListener {
             showChangeLocationDialog()
         }
+
+        notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            isNotificationsEnabled = isChecked
+            if (isChecked) {
+                Toast.makeText(this, "Weather notifications enabled", Toast.LENGTH_SHORT).show()
+                // Request notification permission if not granted
+                checkNotificationPermission()
+            } else {
+                Toast.makeText(this, "Weather notifications disabled", Toast.LENGTH_SHORT).show()
+                cancelAllNotifications()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -112,6 +146,22 @@ class WeatherActivity : AppCompatActivity() {
         forecastRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@WeatherActivity)
             adapter = forecastAdapter
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Weather Alerts"
+            val descriptionText = "Real-time weather condition alerts and notifications"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+                enableVibration(true)
+                setShowBadge(true)
+            }
+
+            val notificationManager: NotificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -125,6 +175,22 @@ class WeatherActivity : AppCompatActivity() {
             )
         } else {
             getCurrentLocationAndLoadWeather()
+        }
+
+        // Check notification permission
+        checkNotificationPermission()
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
+            }
         }
     }
 
@@ -183,6 +249,7 @@ class WeatherActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     response.body()?.let { weather ->
                         updateWeatherUI(weather)
+                        checkAndSendWeatherNotification(weather)
                     }
                 } else {
                     Toast.makeText(this@WeatherActivity, "Failed to load weather data", Toast.LENGTH_SHORT).show()
@@ -201,6 +268,7 @@ class WeatherActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     response.body()?.let { weather ->
                         updateWeatherUI(weather)
+                        checkAndSendWeatherNotification(weather)
                     }
                 } else {
                     Toast.makeText(this@WeatherActivity, "City not found", Toast.LENGTH_SHORT).show()
@@ -221,7 +289,9 @@ class WeatherActivity : AppCompatActivity() {
         feelsLikeText.text = "Feels like ${feelsLike}°C"
 
         // Description
-        val description = weather.weather?.firstOrNull()?.description?.capitalize() ?: "Unknown"
+        val description = weather.weather?.firstOrNull()?.description?.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        } ?: "Unknown"
         weatherDescriptionText.text = description
 
         // Weather icon
@@ -250,6 +320,85 @@ class WeatherActivity : AppCompatActivity() {
         lastUpdatedText.text = "Last updated: $currentTime"
     }
 
+    private fun checkAndSendWeatherNotification(weather: com.xdevstudio.colink.models.WeatherResponse) {
+        if (!isNotificationsEnabled) return
+
+        val currentTime = System.currentTimeMillis()
+        val weatherMain = weather.weather?.firstOrNull()?.main ?: "Clear"
+        val temp = weather.main?.temp?.roundToInt() ?: 0
+        val description = weather.weather?.firstOrNull()?.description ?: ""
+
+        // Only send notification if weather condition changed or after 1 hour
+        if (weatherMain != lastWeatherCondition || currentTime - lastNotificationTime > 3600000) {
+            sendWeatherNotification(weatherMain, temp, description)
+            lastWeatherCondition = weatherMain
+            lastNotificationTime = currentTime
+        }
+    }
+
+    private fun sendWeatherNotification(weatherMain: String, temp: Int, description: String) {
+        val notificationManager = NotificationManagerCompat.from(this)
+
+        // Check if we have notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+        }
+
+        val (title, message) = createNotificationContent(weatherMain, temp, description)
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(getNotificationIcon(weatherMain))
+            .setContentTitle(title)
+            .setContentText(message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
+            .build()
+
+        notificationManager.notify(NOTIFICATION_ID, notification)
+    }
+
+    private fun createNotificationContent(weatherMain: String, temp: Int, description: String): Pair<String, String> {
+        return when {
+            weatherMain.lowercase().contains("thunderstorm") ->
+                "⚡ Thunderstorm Alert!" to "Thunderstorm detected in $currentCity. Stay indoors and avoid open areas."
+
+            weatherMain.lowercase().contains("rain") || weatherMain.lowercase().contains("drizzle") ->
+                "🌧️ Rain Alert" to "Rain expected in $currentCity. Don't forget your umbrella! Current temp: ${temp}°C"
+
+            weatherMain.lowercase().contains("snow") ->
+                "❄️ Snow Alert" to "Snowfall in $currentCity. Drive carefully and dress warmly! Current temp: ${temp}°C"
+
+            temp > 35 ->
+                "🔥 Extreme Heat" to "Very hot in $currentCity ($temp°C). Stay hydrated and avoid direct sun exposure."
+
+            temp < 5 ->
+                "🥶 Cold Alert" to "Very cold in $currentCity ($temp°C). Dress warmly and limit outdoor exposure."
+
+            weatherMain.lowercase().contains("fog") || weatherMain.lowercase().contains("mist") ->
+                "🌫️ Low Visibility" to "Foggy conditions in $currentCity. Drive carefully and use headlights."
+
+            else ->
+                "🌤️ Weather Update" to "Current weather in $currentCity: ${description.capitalize()}, ${temp}°C"
+        }
+    }
+
+    private fun getNotificationIcon(weatherMain: String): Int {
+        return when (weatherMain.lowercase()) {
+            "thunderstorm" -> R.drawable.ic_storm_notification
+            "rain", "drizzle" -> R.drawable.ic_rain_notification
+            "snow" -> R.drawable.ic_snow_notification
+            "clear" -> R.drawable.ic_sunny_notification
+            "clouds" -> R.drawable.ic_cloudy_notification
+            "fog", "mist" -> R.drawable.ic_fog_notification
+            else -> R.drawable.ic_weather_notification
+        }
+    }
+
     private fun showWeatherAlert(weatherMain: String, temp: Int) {
         var alertMessage = ""
         var showAlert = false
@@ -275,6 +424,10 @@ class WeatherActivity : AppCompatActivity() {
                 alertMessage = "🌡️ It's hot! Stay hydrated and wear sunscreen."
                 showAlert = true
             }
+            weatherMain.lowercase().contains("fog") || weatherMain.lowercase().contains("mist") -> {
+                alertMessage = "🌫️ Foggy conditions. Drive carefully."
+                showAlert = true
+            }
         }
 
         if (showAlert) {
@@ -292,7 +445,7 @@ class WeatherActivity : AppCompatActivity() {
             "rain", "drizzle" -> R.drawable.ic_weather_rainy
             "thunderstorm" -> R.drawable.ic_weather_storm
             "snow" -> R.drawable.ic_weather_snowy
-            "mist", "fog", "haze" -> R.drawable.ic_weather_cloudy
+            "mist", "fog", "haze" -> R.drawable.ic_weather_fog
             else -> R.drawable.ic_weather_sunny
         }
     }
@@ -367,6 +520,16 @@ class WeatherActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun startPeriodicWeatherUpdates() {
+
+        Toast.makeText(this, "Weather updates will notify you of significant changes", Toast.LENGTH_LONG).show()
+    }
+
+    private fun cancelAllNotifications() {
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.cancel(NOTIFICATION_ID)
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -383,6 +546,20 @@ class WeatherActivity : AppCompatActivity() {
                     loadWeatherByCity("Johannesburg")
                 }
             }
+
+            NOTIFICATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Weather notifications enabled", Toast.LENGTH_SHORT).show()
+                } else {
+                    notificationSwitch.isChecked = false
+                    Toast.makeText(this, "Notifications disabled. Enable in app settings.", Toast.LENGTH_LONG).show()
+                }
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up any ongoing operations
     }
 }

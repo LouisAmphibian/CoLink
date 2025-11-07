@@ -15,6 +15,7 @@
 
 
   <!-- Main Screens -->
+  <string name="monitoring_weather_conditions">Monitering van weersomstandighede vir waarskuwings</string>
   <string name="chats">Geselsies</string>
   <string name="settings">Instellings</string>
   <string name="help">Help</string>
@@ -49,4 +50,9 @@
   <string name="group_created">Gebeuregroep suksesvol geskep!</string>
   <string name="error_creating_group">Fout met die skep van groep</string>
   <string name="whatsapp_not_installed">WhatsApp is nie geïnstalleer nie. Installeer asseblief WhatsApp om lede uit te nooi.</string>
+    <string name="weather_notifications">Weerkennisgewings</string>
+  <string name="notifications_enabled">Weerkennisgewings aangeskakel</string>
+  <string name="notifications_disabled">Weerkennisgewings gedeaktiveer</string>
+  <string name="notification_permission_required">Kennisgewingtoestemming benodig vir weerwaarskuwings</string>
+  <string name="weather_monitoring">Weermonitering</string>
 </resources>

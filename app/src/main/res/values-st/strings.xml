@@ -16,7 +16,13 @@
 
 
   <!-- Main Screens -->
-  <string name="chats">Chats</string>
+  <string name="weather_notifications">Ditsebiso tsa Leholimo</string>
+  <string name="notifications_enabled">Liketsahalo tsa leholimo li buletsoe</string>
+  <string name="notifications_disabled">Liketsahalo tsa leholimo li tlositsoe</string>
+  <string name="notification_permission_required">Tlhahlobo ea tsebiso ea hlokahala bakeng sa tsebiso ea maemo a leholimo</string>
+  <string name="weather_monitoring">Tlhahlobo ea Leholimo</string>
+  <string name="monitoring_weather_conditions">Ho shebella maemo a leholimo bakeng sa tsena tse lemohang\n</string>
+    <string name="chats">Chats</string>
   <string name="settings">Settings</string>
   <string name="help">Help</string>
   <string name="security">Security</string>
