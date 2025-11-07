@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+
 }
 
 android {
@@ -79,13 +80,29 @@ dependencies {
  //   implementation ("com.google.firebase:firebase-messaging-ktx")
  //   implementation ("com.google.firebase:firebase-analytics-ktx")
 
+    // Activity Recognition for movement detection
+    implementation ("com.google.android.gms:play-services-awareness:19.0.1")
+
+    // For step counting on older devices
+    implementation ("com.github.ajitsing:SensorManager:1.0.0")
+
+    // Google Play Services
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.android.gms:play-services-awareness:19.0.1")
 
     // Testing
     testImplementation ("junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
+// Retrofit for API calls
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+// OkHttp for network logging
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
 
     
