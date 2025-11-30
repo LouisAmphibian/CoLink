@@ -22,8 +22,6 @@
 ## 👥 Created By
 This app was proudly built by a passionate team of developers:
 - *Ayanda*
-- *Fikile*
-- *Donald*
 - *Tshepo*
 
 We wanted to create an app that brings people together in a safe, transparent, and fun way.
