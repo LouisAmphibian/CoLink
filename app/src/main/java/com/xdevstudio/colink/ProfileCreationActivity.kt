@@ -56,9 +56,29 @@ class ProfileCreationActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
 
+        // Check if profile already exists
+        checkExistingProfile()
+
         initializeViews()
         setupClickListeners()
         setupBackPressHandler()
+    }
+
+    private fun checkExistingProfile() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            firestore.collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        println("✅ Profile already exists, redirecting to chat")
+                        navigateToChatActivity()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    println("ℹ️ No existing profile or error checking: ${exception.message}")
+                    // Continue with normal flow
+                }
+        }
     }
 
     private fun initializeViews() {
@@ -151,22 +171,34 @@ class ProfileCreationActivity : AppCompatActivity() {
 
         // Check if user is authenticated or not
         if (currentUser == null) {
-            showToast("User not authenticated")
+            showToast("User not authenticated. Please sign in again.")
             setLoadingState(false)
             // Redirect to verification
             navigateToVerificationActivity()
             return
         }
 
-        val userId = currentUser.uid
-        val phoneNumber = currentUser.phoneNumber ?: ""
+        //Force token refresh to ensure valid authentication
+        currentUser.getIdToken(true).addOnCompleteListener { tokenTask ->
+            if (tokenTask.isSuccessful){
+                val userId = currentUser.uid
+                val phoneNumber = currentUser.phoneNumber ?: ""
 
-        // If there's a profile image, upload it first
-        if (profileImageUri != null) {
-            uploadProfileImage(userId, name, phoneNumber)
-        } else {
-            // Save profile without image
-            saveUserProfileToFirestore(userId, name, phoneNumber, null)
+                println("🔥 User authenticated: $userId")
+                println("🔥 Phone number: $phoneNumber")
+
+                // If there's a profile image, upload it first
+                if (profileImageUri != null) {
+                    uploadProfileImage(userId, name, phoneNumber)
+                }  else {
+                    // Save profile without image
+                    saveUserProfileToFirestore(userId, name, phoneNumber, null)
+                }
+            }else{
+                setLoadingState(false)
+                showToast("Authentication failed. Please sign in again.")
+                navigateToVerificationActivity()
+            }
         }
     }
 
@@ -198,7 +230,11 @@ class ProfileCreationActivity : AppCompatActivity() {
         )
 
         //logging to debug co-link
-        println("🔥🔥Attempting to save user profile:  $userProfile")
+        println("🔥 Attempting to save to Firestore...")
+        println("🔥 User ID: $userId")
+        println("🔥 Collection: users")
+        println("🔥 Document ID: $userId")
+        println("🔥 Profile data: $userProfile")
 
         firestore.collection("users")
             .document(userId)
@@ -213,6 +249,15 @@ class ProfileCreationActivity : AppCompatActivity() {
                 println("❌Failed to save profile ${exception.message}") //Debug
                 setLoadingState(false)
                 showToast("❌Failed to save profile ${exception.message}")
+
+                // Check for specific permission denied error
+                if (exception.message?.contains("PERMISSION_DENIED") == true) {
+                    showToast("Permission denied. Check Firestore security rules.")
+                    println("🔒 PERMISSION_DENIED: Update Firestore security rules in Firebase Console")
+                } else {
+                    showToast("Failed to save profile: ${exception.message}")
+                }
+                setLoadingState(false)
             }
     }
 
